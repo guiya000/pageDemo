@@ -1,106 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D 立方体</title>
-    <style>
-      * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    svg{
+      width: 600px;
+      height: 600px;
+      background-color: #cfc4c4;
+      display: block;
+      margin: 30px auto;
+    }
+    #c0{
+      stroke: #a3aaca;
+    }
+    #c2{
+      fill:white;
+    }
+    circle#c1{
+      stroke-linecap:round;
+      transform: rotateZ(-90deg);
+      transform-origin: center;
+    }
+    #text0{
+      font-size: 50px;
+      stroke-width: 5;
+      /* stroke-dasharray: 20 1; */
+    }
+    #text1{
+      font-size: 50px;
+      stroke-width: 2;
+      stroke: white;
+      fill: white;
+    }
+  </style>
+</head>
+<body>
+  <svg>
+    <defs>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:rgb(0,255,0);stop-opacity:1" />
+        <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+      </linearGradient>
+    </defs>
+    <circle id="c0" cx="300" cy="300" r="100" fill="none" stroke-width="10"></circle>
+    <!-- <circle id="c2" cx="300" cy="300" r="95"></circle> -->
+    <circle id="c1" cx="300" cy="300" r="100" fill="none" stroke-width="10"></circle>
+    <text id="text0" x="300" y="300" alignment-baseline="middle" text-anchor="middle" fill="none">0%</text>
+    <text id="text1" x="300" y="300" alignment-baseline="middle" text-anchor="middle">0%</text>
+  </svg>
+  <script>
+    let cir = document.getElementById('c1');
+    let text0 = document.getElementById('text0');
+    let text1 = document.getElementById('text1');
+    let len = cir.getTotalLength();
+    let percen = 0;
+    function act(i) {
+      if (percen < 100) {
+        percen++
+      }else{
+        percen = 0;
       }
-      body{
-        height: 100vh;
-        display: flex;
-        background-image: linear-gradient(red,green);
-        justify-content: center;
-        align-items: center;
-      }
-      #app{
-        width: 200px;
-        height: 200px;
-        position: relative;
-        transform-style: preserve-3d;
-        /* animation: app 10s infinite linear; */
-        transform: rotateX(0) rotateY(0) rotateZ(0);
-        font-size: 30px;
-      }
-      #app:hover{
-        animation-play-state: paused;
-      }
-      #app .item{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 200px;
-        height: 200px;
-        opacity: 0.8;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .item0{
-        background-color: rgb(50, 37, 163);
-        transform: translateZ(100px);
-      }
-      .item1{
-        background-color: rgb(126, 60, 60);
-        transform: rotatex(90deg) translateZ(-100px);
-      }
-      .item2{
-        background-color: rgb(60, 126, 82);
-        transform: translateZ(-100px);
-      }
-      .item3{
-        background-color: rgb(112, 126, 60);
-        transform: rotateY(90deg) translateZ(-100px);
-      }
-      .item4{
-        background-color: rgb(218, 198, 19);
-        transform: rotateY(90deg) translateZ(100px);
-      }
-      .item5{
-        background-color: rgb(126, 60, 93);
-        transform: rotateX(90deg) translateZ(100px);
-      }
-      @keyframes app {
-        0%,100%{
-          transform: rotateX(0) rotateY(0) rotateZ(0);
-        }
-        50%{
-          transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app">
-      <div class="item item0">0</div>
-      <div class="item item1">1</div>
-      <div class="item item2">2</div>
-      <div class="item item3">3</div>
-      <div class="item item4">4</div>
-      <div class="item item5">5</div>
-    </div>
-    <script>
-      let x = 0;y = 0;z = 0;
-      let app = document.getElementById("app");
-      setInterval(() => {
-        ++x;++y;++z;
-        if (x > 360) {
-          x = 1
-        }
-        if (y > 360) {
-          y = 1
-        }
-        if (z > 360) {
-          z = 1
-        }
-        app.style.transform = "rotateX(" + x +"deg) rotateY(" + y +"deg) rotateZ(" + z +"deg)"
-      }, 20);
-    </script>
-  </body>
+      color = `rgb(${255*(100 - percen)/100},${255*percen/100},0)`
+      cir.setAttribute('stroke-dasharray',[percen*len/100,len])
+      cir.setAttribute('stroke',color)
+      text0.innerHTML = percen + '%'
+      text1.innerHTML = percen + '%'
+      // text0.setAttribute('stroke',color)
+      setTimeout(() => {
+        act(i)
+      }, percen===100?1000:i);
+    }
+    act(20)
+  </script>
+</body>
 </html>
